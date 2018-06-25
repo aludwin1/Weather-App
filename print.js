@@ -2,4 +2,11 @@ function printMessage(city, temperature) {
   console.log(`The temperature in ${city} is ${temperature}`);
 };
 
-module.exports.printMessage = printMessage;
+function printError(error) {
+  console.error(error.message);
+};
+
+module.exports = {
+  printMessage: printMessage,
+  printError: printError
+};
