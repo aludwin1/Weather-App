@@ -1,6 +1,6 @@
 const http = require('http');
-
-const openWeatherKey = '5eb30473dadeff76d0ee3d63a557be71';
+const api = require('./api.json');
+const openWeatherKey = api.weatherAPI;
 const openWeatherURL = `http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=${openWeatherKey}`;
 
 const request = http.get(openWeatherURL, response => {
