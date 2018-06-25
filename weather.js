@@ -5,7 +5,7 @@ const print = require('./print');
 //Print out temp details
 //Print out error message
 function get(query) {
-  const request = http.get(query, response => {
+  const request = http.get(`http://api.openweathermap.org/data/2.5/weather?${query}`, response => {
     if(response.statusCode === 200) {
       let body = '';
       //Read the data
@@ -28,4 +28,3 @@ function get(query) {
 };
 
 module.exports.get = get;
-
