@@ -1,25 +1,31 @@
 const http = require('http');
-const api = require('./api.json');
-const openWeatherKey = api.weatherAPI;
-const openWeatherURL = `http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=${openWeatherKey}`;
+const print = require('./print');
+//Utimate goal is to type in the zip code and get the weather for your city like - "The temperature in Hopewell Junction is 60.0F"
 
-const request = http.get(openWeatherURL, response => {
-  if(response.statusCode === 200) {
-    let body = '';
+//Print out temp details
+//Print out error message
+function get(query) {
+  const request = http.get(query, response => {
+    if(response.statusCode === 200) {
+      let body = '';
+      //Read the data
+      response.on('data', data => {
+        body += data.toString();
+      });
 
-    response.on('data', data => {
-      body += data.toString();
-    });
+      response.on('end', () => {
+        try {
+          const weather = JSON.parse(body);
+          print.printMessage(weather.name, weather.main.temp);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+    } else {
+      console.error(`There was an error finding the temperature for your zip code (${http.STATUS_CODES[response.statusCode]})`);
+    }
+  });
+};
 
-    response.on('end', () => {
-      try {
-        const weather = JSON.parse(body);
-        console.log(weather);
-      } catch (error) {
-        console.error(error.message);
-      }
+module.exports.get = get;
 
-    });
-  }
-
-});
